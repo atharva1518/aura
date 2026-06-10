@@ -6,8 +6,8 @@ from database.db import Base
 from models.base_model import BaseModel
 
 
-class Topic(Base, BaseModel):
-    __tablename__ = "topics"
+class Quiz(Base, BaseModel):
+    __tablename__ = "quizzes"
 
     chapter_id = Column(
         UUID(as_uuid=True),
@@ -15,15 +15,26 @@ class Topic(Base, BaseModel):
         nullable=False
     )
 
-    name = Column(
+    title = Column(
         String(255),
         nullable=False
     )
 
+    quiz_type = Column(
+        String(50)
+    )
+
     chapter = relationship(
         "Chapter",
-        back_populates="topics"
+        back_populates="quizzes"
     )
+
     questions = relationship(
-    "Question"
-)
+        "Question",
+        back_populates="quiz"
+    )
+
+    attempts = relationship(
+        "QuizAttempt",
+        back_populates="quiz"
+    )

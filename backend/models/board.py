@@ -5,15 +5,21 @@ from database.db import Base
 from models.base_model import BaseModel
 
 
-class Subject(Base, BaseModel):
-    __tablename__ = "subjects"
+class Board(Base, BaseModel):
+    __tablename__ = "boards"
 
     name = Column(
-        String(100),
+        String(50),
+        unique=True,
         nullable=False
+    )
+
+    student_profiles = relationship(
+        "StudentProfile",
+        back_populates="board"
     )
 
     curriculum_subjects = relationship(
         "CurriculumSubject",
-        back_populates="subject"
+        back_populates="board"
     )

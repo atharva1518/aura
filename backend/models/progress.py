@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, Numeric, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
@@ -6,8 +6,8 @@ from database.db import Base
 from models.base_model import BaseModel
 
 
-class UserSubject(Base, BaseModel):
-    __tablename__ = "user_subjects"
+class Progress(Base, BaseModel):
+    __tablename__ = "progress"
 
     student_id = Column(
         UUID(as_uuid=True),
@@ -21,16 +21,10 @@ class UserSubject(Base, BaseModel):
         nullable=False
     )
 
-    target_score = Column(Integer)
-
-    priority_level = Column(Integer)
-
-    student = relationship(
-        "StudentProfile",
-        back_populates="user_subjects"
+    completion_percent = Column(
+        Numeric(5, 2)
     )
 
-    curriculum_subject = relationship(
-        "CurriculumSubject",
-        back_populates="user_subjects"
+    accuracy_percent = Column(
+        Numeric(5, 2)
     )

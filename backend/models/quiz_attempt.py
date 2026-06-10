@@ -6,8 +6,8 @@ from database.db import Base
 from models.base_model import BaseModel
 
 
-class UserSubject(Base, BaseModel):
-    __tablename__ = "user_subjects"
+class QuizAttempt(Base, BaseModel):
+    __tablename__ = "quiz_attempts"
 
     student_id = Column(
         UUID(as_uuid=True),
@@ -15,22 +15,29 @@ class UserSubject(Base, BaseModel):
         nullable=False
     )
 
-    curriculum_subject_id = Column(
+    quiz_id = Column(
         UUID(as_uuid=True),
-        ForeignKey("curriculum_subjects.id"),
+        ForeignKey("quizzes.id"),
         nullable=False
     )
 
-    target_score = Column(Integer)
+    score = Column(Integer)
 
-    priority_level = Column(Integer)
+    total_questions = Column(Integer)
+
+    time_taken = Column(Integer)
 
     student = relationship(
         "StudentProfile",
-        back_populates="user_subjects"
+        back_populates="quiz_attempts"
     )
 
-    curriculum_subject = relationship(
-        "CurriculumSubject",
-        back_populates="user_subjects"
+    quiz = relationship(
+        "Quiz",
+        back_populates="attempts"
+    )
+
+    question_attempts = relationship(
+        "QuestionAttempt",
+        back_populates="attempt"
     )

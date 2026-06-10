@@ -1,31 +1,39 @@
-from sqlalchemy import Column, Integer, String, Date, DateTime
-from sqlalchemy.sql import func
+import uuid
+
+from sqlalchemy import Column, String, Boolean
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
 
 from database.db import Base
+from models.base_model import BaseModel
 
 
-class User(Base):
+class User(Base, BaseModel):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
+    email = Column(
+        String(255),
+        unique=True,
+        nullable=False
+    )
 
-    name = Column(String, nullable=False)
+    password_hash = Column(
+        String,
+        nullable=False
+    )
 
-    email = Column(String, unique=True, nullable=False)
+    role = Column(
+        String(20),
+        default="student"
+    )
 
-    password_hash = Column(String, nullable=False)
+    is_active = Column(
+        Boolean,
+        default=True
+    )
 
-    grade = Column(String)
-
-    board = Column(String)
-
-    target_score = Column(Integer)
-
-    daily_study_hours = Column(Integer)
-
-    exam_date = Column(Date)
-
-    created_at = Column(
-        DateTime(timezone=True),
-        server_default=func.now()
+    student_profile = relationship(
+        "StudentProfile",
+        back_populates="user",
+        uselist=False
     )
